@@ -67,10 +67,10 @@ router.post("/signin", async (req, res) => {
   const { success } = signinBody.safeParse(req.body);
   if (!success) {
     return res.status(411).json({
-      message: "Email already taken / Incorrect inputs",
+      message: "Incorrect inputs",
     });
   }
-
+  
   const user = await User.findOne({
     username: req.body.username,
     password: req.body.password,
@@ -95,13 +95,14 @@ router.post("/signin", async (req, res) => {
   });
 });
 
+/// after all your auth you will be able to acesss these routes BELOW
 const updateBody = zod.object({
   password: zod.string().optional(),
   firstName: zod.string().optional(),
   lastName: zod.string().optional(),
 });
 
-/// after all your auth you will be able to acesss these routes
+
 router.put("/", authMiddleware, async (req, res) => {
   const { success } = updateBody.safeParse(req.body);
   if (!success) {
